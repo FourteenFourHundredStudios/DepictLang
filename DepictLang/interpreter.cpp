@@ -14,10 +14,10 @@ Interpreter::Interpreter(string code_init){
     code = code_init;
     generateStatements();
     generateBindings();
-    for(Statement i : statements){
+    for(Statement statement : statements){
     
-        KeywordToken *keyword = static_cast<KeywordToken*>(i.get(0));
-        Binding binding = *getBinding(keyword->token);
+        Token keyword = *statement.get(0);
+        Binding binding = *getBinding(keyword.value);
         
         //cout << i.str() << endl;
         
@@ -28,20 +28,17 @@ Interpreter::Interpreter(string code_init){
     
 }
 
-
+//MIGHT BE BROKEN
 void Interpreter::generateStatements(){
     Tokenizer tokenizer = Tokenizer(code);
     Statement currentStatement = Statement() ;
     for (Token* token : tokenizer.tokens){
-        //cout << token->str() << endl;
-        if(DelimiterToken* v = dynamic_cast<DelimiterToken*>(token)) {
-            if(v->token == '\n'){
-                statements.push_back(currentStatement);
-                currentStatement.tokens.clear();
-                continue;
-            }
-            continue;
+
+        if(token->getType()==Tokenizer::delimiter && token ->value == "\n"){
+            statements.push_back(currentStatement);
+            currentStatement.tokens.clear();
         }
+        
         currentStatement.tokens.push_back(token);
     }
 }

@@ -13,65 +13,7 @@
 
 #include "util.hpp"
 
-class Token{
-public:
-    virtual string str(){
-        return "???";
-    }
-};
 
-class DelimiterToken : public Token{
-    
-public:
-    char token;
-    
-    DelimiterToken(char token_init){
-        token = token_init;
-    }
-    
-    string str()  {
-        string val = "Delimiter: ";
-        val += token;
-        if (token == '\n') {
-            val = "Delimiter: (newline)";
-        }
-        return val;
-    }
-};
-
-class KeywordToken : public Token{
-    
-public:
-    string token;
-    KeywordToken(string token_init){
-        token = token_init;
-    }
-    string str()  {
-        return "Keyword: "+token;
-    }
-   
-};
-
-class ContainerToken : public Token{
-    
-public:
-    string token;
-    char openingToken;
-    char closingToken;
-    ContainerToken(string token_init, char openingToken_init, char closingToken_init){
-        token = token_init;
-        openingToken = openingToken_init;
-        closingToken = closingToken_init;
-    }
-    string str()  {
-        string val = "Container: ";
-        val += openingToken;
-        val += token;
-        val += closingToken;
-        return val;
-    }
-    
-};
 
 class Tokenizer{
     
@@ -79,12 +21,61 @@ public:
     
     string source;
     vector<Token*> tokens;
+    string tokenValue; 
+    bool recordChar = true; 
+    bool inLiteral = false;
     
+    enum tokenType {
+        container,
+        literal,
+        delimiter,
+        keyword,
+        
+    };
+    
+    enum tokenName {
+        round_brackets,
+        square_brackets,
+        curly_brackets,
+        angle_brackets,
+        newline,
+        comma,
+        space,
+        word,
+        single_quotes
+    };
+    
+    struct tokenMatch {
+        tokenType type;
+        tokenName name;
+        char opening;
+        char closing;
+    };
+    
+    vector <tokenMatch> tokenMatchList;
+    int stateCount = 0;
+    tokenMatch state;
     Tokenizer(string source_init);
+    
+    tokenMatch identifyToken(char c);
     void tokenize();
+    void setup();
+    void handleDelimiter(tokenMatch match);
+    void handleLiteral(tokenMatch match);
+    void handleContainer(tokenMatch match, char matchChar);
     
 };
 
+
+class Token{
+public:
+    Tokenizer::tokenMatch tokenProps;
+    Token(string value_init,Tokenizer::tokenMatch tokenProps_init);
+    string value;
+    string str();
+    Tokenizer::tokenType getType();
+    Tokenizer::tokenName getName();
+};
 
 
 #endif /* tokenizer_hpp */

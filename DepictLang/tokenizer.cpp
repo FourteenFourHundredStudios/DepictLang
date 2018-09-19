@@ -9,139 +9,134 @@
 
 #include "tokenizer.hpp"
 
-
-char tokens [] = { '\n', ',', ' '};
-char singleMatchtokens [] = { '"','\'' };
-char matchTokens[] = { '{', '}', '(', ')' , '[', ']', '<', '>'};
-char openToken = '~';
-char closingToken = '~';
-int openTokenCount = -1;
-bool singleOpenToken = false;
-
-int inTokens(char token){
-    for(char c : tokens) {
-        if (c == token){
-            return true;
-        }
-
-    }
-    return false;
+Token::Token(string value_init,Tokenizer::tokenMatch tokenProps_init){
+    value = value_init;
+    tokenProps = tokenProps_init;
 }
 
-int inSingleMatchtokens(char token){
-    for(char c : singleMatchtokens) {
-        if (c == token){
-            return true;
+string Token::str(){
+    if(getType()==Tokenizer::literal){
+        string result = "Literal: ";
+        result += tokenProps.opening;
+        result += value;
+        result += tokenProps.opening;
+        return result;
+    }else if (getType()==Tokenizer::container){
+        string result = "Container: ";
+        result += tokenProps.opening;
+        result += value;
+        result += tokenProps.closing;
+        return result;
+    }else if (getType()==Tokenizer::delimiter){
+        string result = "Delimiter: ";
+        if(result!="\n"){
+            result += value;
+        }else{
+            result+= "\\n";
         }
-        
+        return result;
+    }else if (getType()==Tokenizer::keyword){
+        return "Keyword: "+value;
     }
-    return false;
+    return "";
 }
 
-
-int isOpeningToken(char token){
-    for(int i=0; i< sizeof(matchTokens); i+=2) {
-        char c = matchTokens[i];
-        if (c == token){
-            return i;
-        }
-    }
-    return -1;
+Tokenizer::tokenType Token::getType(){
+    return tokenProps.type;
 }
 
-bool isClosingToken(char token){
-    for(int i=1; i< sizeof(matchTokens); i+=2) {
-        char c = matchTokens[i];
-        if (c == token){
-            return true;
-        }
-    }
-    return false;
+Tokenizer::tokenName Token::getName(){
+    return tokenProps.name;
 }
-
-
 
 Tokenizer::Tokenizer(string source_init){
     source = source_init;
+    setup();
     tokenize();
 }
 
-//TODO Split this massive function up into 3 smaller functions
+
+
+void Tokenizer::setup(){
+    tokenMatchList = {
+        { container, curly_brackets ,'{', '}' },
+        { literal, single_quotes ,'"' },
+        { delimiter, space , ' ' },
+        { delimiter, newline , '\n' },
+    };
+    state = { keyword };
+}
+
+Tokenizer::tokenMatch Tokenizer::identifyToken(char c){
+    for(tokenMatch potentialMatch : tokenMatchList){
+        if (c == potentialMatch.opening || c == potentialMatch.closing){
+            return potentialMatch;
+        }
+    }
+    return { keyword };
+}
+
+void Tokenizer::handleDelimiter(Tokenizer::tokenMatch match){
+    if(match.type==delimiter && state.type == keyword){
+        if(tokenValue != ""){
+            tokens.push_back(new Token(tokenValue, state));
+            tokenValue = "";
+        }
+
+        tokens.push_back(new Token(string() + match.opening, { delimiter }));
+        recordChar = false;
+    }
+}
+
+void Tokenizer::handleLiteral(Tokenizer::tokenMatch match){
+    if(match.type==literal){
+        inLiteral = !inLiteral;
+        if(state.type == keyword){
+            state = match;
+            recordChar = false;
+        }else if (state.type == literal){
+            tokens.push_back(new Token(tokenValue,state));
+            state = { keyword };
+            tokenValue = "";
+            recordChar = false;
+        }
+    }
+}
+
+void Tokenizer::handleContainer(Tokenizer::tokenMatch match, char matchChar){
+    if(match.type==container && !inLiteral){
+        if(state.type == keyword && stateCount == 0){
+            if(tokenValue != ""){
+                tokens.push_back(new Token(tokenValue, state));
+                tokenValue = "";
+            }
+            state = match;
+            stateCount++;
+            recordChar = false;
+        }else if(state.type==container){
+            if(match.opening==matchChar){
+                stateCount++;
+            }else if(match.closing==matchChar){
+                stateCount--;
+            }
+            if(stateCount == 0){
+                tokens.push_back(new Token(tokenValue,state));
+                recordChar = false;
+            }
+        }
+    }
+}
+
 
 void Tokenizer::tokenize() {
-    string part = "";
-    
-    
-    for(char c : source) {
-        
-        int openTokenPos = isOpeningToken(c);
-        
-        if (inSingleMatchtokens(c) && closingToken == '~'){
-
-            if(!singleOpenToken){
-                singleOpenToken = true;
-                openToken = c;
-            }else if (c==openToken){
-                ContainerToken* container = new ContainerToken(part, openToken, openToken);
-                tokens.push_back(container);
-                openToken = '~';
-                singleOpenToken = false;
-                part = "";
-            }
-            
-        }else if(openTokenPos != -1){
-            
-            if(openToken == '~'){
-                
-                if (part!=""){
-                    KeywordToken* keyword = new KeywordToken(part);
-                    tokens.push_back(keyword);
-                    part = "";
-                }
-                
-                openToken = c;
-                closingToken = matchTokens[openTokenPos + 1];
-                openTokenCount = 1;
-            }else if ( c==openToken ){
-                openTokenCount++;
-                part += c;
-            }else{
-                part += c;
-            }
-            
-        }else if(isClosingToken(c)){
-            if (c == closingToken){
-                openTokenCount--;
-                //part += c;
-                if(openTokenCount == 0){
-                    
-                    ContainerToken* container = new ContainerToken(part, openToken, closingToken);
-                    tokens.push_back(container);
-                    
-                    openToken = '~';
-                    closingToken = '~';
-                    openTokenCount = -1;
-                    
-                   
-                    part = "";
-                    continue;
-                }
-            }
-            part += c;
-            
-        
-        } else if(inTokens(c) && openToken=='~'){
-            if(part != ""){
-                KeywordToken* keyword = new KeywordToken(part);
-                tokens.push_back(keyword);
-            }
-            DelimiterToken* delimiter = new DelimiterToken(c);
-            tokens.push_back(delimiter);
-            part = "";
-        }else{
-            
-            part += c;
-        }
+    for(char c : source){
+        recordChar = true;
+        tokenMatch charMatch = identifyToken(c);
+        handleDelimiter(charMatch);
+        handleLiteral(charMatch);
+        handleContainer(charMatch,c);
+        if (!recordChar) continue;
+        tokenValue += c;
     }
 }
 
