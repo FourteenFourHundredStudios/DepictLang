@@ -11,6 +11,7 @@
 
 #include "tokenizer.hpp"
 #include "bindings.hpp"
+#include "Parser.hpp"
 #include "util.hpp"
 
 class Statement {

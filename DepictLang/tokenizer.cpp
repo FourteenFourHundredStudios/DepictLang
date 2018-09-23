@@ -29,10 +29,10 @@ string Token::str(){
         return result;
     }else if (getType()==Tokenizer::delimiter){
         string result = "Delimiter: ";
-        if(result!="\n"){
-            result += value;
+        if(value == "\n"){
+            result += "\\n";
         }else{
-            result+= "\\n";
+            result+= value;
         }
         return result;
     }else if (getType()==Tokenizer::keyword){
@@ -60,8 +60,13 @@ Tokenizer::Tokenizer(string source_init){
 void Tokenizer::setup(){
     tokenMatchList = {
         { container, curly_brackets ,'{', '}' },
+        { container, square_brackets ,'[', ']' },
+        { container, parentheses ,'(', ')' },
+        { literal, double_quotes ,'"' },
         { literal, single_quotes ,'"' },
         { delimiter, space , ' ' },
+        { delimiter, comma , ',' },
+      //  { delimiter, equal , '=' },
         { delimiter, newline , '\n' },
     };
     state = { keyword };
@@ -83,7 +88,7 @@ void Tokenizer::handleDelimiter(Tokenizer::tokenMatch match){
             tokenValue = "";
         }
 
-        tokens.push_back(new Token(string() + match.opening, { delimiter }));
+        tokens.push_back(new Token(string() + match.opening, { match }));
         recordChar = false;
     }
 }
@@ -95,7 +100,7 @@ void Tokenizer::handleLiteral(Tokenizer::tokenMatch match){
             state = match;
             recordChar = false;
         }else if (state.type == literal){
-            tokens.push_back(new Token(tokenValue,state));
+            tokens.push_back(new Token(tokenValue,match));
             state = { keyword };
             tokenValue = "";
             recordChar = false;
@@ -107,7 +112,7 @@ void Tokenizer::handleContainer(Tokenizer::tokenMatch match, char matchChar){
     if(match.type==container && !inLiteral){
         if(state.type == keyword && stateCount == 0){
             if(tokenValue != ""){
-                tokens.push_back(new Token(tokenValue, state));
+                tokens.push_back(new Token(tokenValue, {keyword}));
                 tokenValue = "";
             }
             state = match;
@@ -120,8 +125,11 @@ void Tokenizer::handleContainer(Tokenizer::tokenMatch match, char matchChar){
                 stateCount--;
             }
             if(stateCount == 0){
-                tokens.push_back(new Token(tokenValue,state));
+                
+                tokens.push_back(new Token(tokenValue,match));
                 recordChar = false;
+                tokenValue = "";
+                state = {keyword};
             }
         }
     }
@@ -132,12 +140,18 @@ void Tokenizer::tokenize() {
     for(char c : source){
         recordChar = true;
         tokenMatch charMatch = identifyToken(c);
-        handleDelimiter(charMatch);
         handleLiteral(charMatch);
+        handleDelimiter(charMatch);
+        
         handleContainer(charMatch,c);
         if (!recordChar) continue;
         tokenValue += c;
     }
+    if(tokenValue != ""){
+        tokens.push_back(new Token(tokenValue, state));
+        tokenValue = "";
+    }
+    
 }
 
 

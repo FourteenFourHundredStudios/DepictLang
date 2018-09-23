@@ -17,9 +17,10 @@ class Binding {
     
 public:
     string name;
-    function<DepictObject* (DepictObject[])> func;
+    function<DepictObject* (vector<DepictObject*>*)> func;
     
-    Binding(string name_init, function<DepictObject* (DepictObject[])> func_init){
+    
+    Binding(string name_init, function<DepictObject* (vector<DepictObject*>*)> func_init){
         name = name_init;
         func = func_init;
     }
@@ -27,7 +28,7 @@ public:
    
 };
 
-void addBinding(string name, function<DepictObject (DepictObject[])> func);
+void addBinding(string name, function<DepictObject* (vector<DepictObject*>*)> func);
 Binding* getBinding(string name);
 void generateBindings();
 

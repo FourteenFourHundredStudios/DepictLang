@@ -34,7 +34,7 @@ public:
     };
     
     enum tokenName {
-        round_brackets,
+        parentheses,
         square_brackets,
         curly_brackets,
         angle_brackets,
@@ -42,7 +42,9 @@ public:
         comma,
         space,
         word,
-        single_quotes
+        single_quotes,
+        double_quotes,
+        equal
     };
     
     struct tokenMatch {

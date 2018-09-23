@@ -10,7 +10,7 @@
 
 vector<Binding> bindings;
 
-void addBinding(string name, function<DepictObject* (DepictObject[])> func){
+void addBinding(string name, function<DepictObject* (vector<DepictObject*>*)> func){
     bindings.push_back(Binding(name, func));
 }
 
@@ -24,9 +24,9 @@ Binding* getBinding(string name){
 }
 
 
-DepictObject* print(DepictObject params[]){
-
-    cout << *params[0].getValue() << endl;
+DepictObject* print(vector<DepictObject*>* params){
+    //cout << "ufff" << endl;
+    cout << *params->at(0)->getValue() << endl;
     return nullptr;
 }
 

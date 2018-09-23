@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		49CCE94E2151CDE2001B8F1F /* prop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49CCE94C2151CDE2001B8F1F /* prop.cpp */; };
+		49D741012152EBB500FB34B6 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49D740FF2152EBB500FB34B6 /* Parser.cpp */; };
 		49E558A2215043BE00F3E753 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E558A1215043BE00F3E753 /* main.cpp */; };
 		49E558AA2150440E00F3E753 /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E558A82150440E00F3E753 /* util.cpp */; };
 		49E558AE2150473B00F3E753 /* tokenizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E558AC2150473B00F3E753 /* tokenizer.cpp */; };
@@ -31,6 +32,8 @@
 /* Begin PBXFileReference section */
 		49CCE94C2151CDE2001B8F1F /* prop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = prop.cpp; sourceTree = "<group>"; };
 		49CCE94D2151CDE2001B8F1F /* prop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = prop.hpp; sourceTree = "<group>"; };
+		49D740FF2152EBB500FB34B6 /* Parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
+		49D741002152EBB500FB34B6 /* Parser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Parser.hpp; sourceTree = "<group>"; };
 		49E5589E215043BE00F3E753 /* DepictLang */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DepictLang; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E558A1215043BE00F3E753 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		49E558A82150440E00F3E753 /* util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = util.cpp; sourceTree = "<group>"; };
@@ -90,6 +93,8 @@
 				49E558B621509A5E00F3E753 /* depictobj.hpp */,
 				49CCE94C2151CDE2001B8F1F /* prop.cpp */,
 				49CCE94D2151CDE2001B8F1F /* prop.hpp */,
+				49D740FF2152EBB500FB34B6 /* Parser.cpp */,
+				49D741002152EBB500FB34B6 /* Parser.hpp */,
 			);
 			path = DepictLang;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49D741012152EBB500FB34B6 /* Parser.cpp in Sources */,
 				49CCE94E2151CDE2001B8F1F /* prop.cpp in Sources */,
 				49E558B121507F3000F3E753 /* interpreter.cpp in Sources */,
 				49E558A2215043BE00F3E753 /* main.cpp in Sources */,

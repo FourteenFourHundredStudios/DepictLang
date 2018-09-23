@@ -16,7 +16,7 @@ DepictObject::DepictObject(){
 void DepictObject::addProp(string name, DepictObject obj){
     prop temp = {};
     temp.name = name;
-    temp.obj = &obj;
+    temp.obj = new DepictObject(obj);
     props.push_back(temp);
 }
 
@@ -35,6 +35,6 @@ string* DepictObject::getValue(){
 
 StringObject::StringObject(string value_init){
     DepictObject();
-    value = &value_init;
+    value = new string(value_init);
 }
 
