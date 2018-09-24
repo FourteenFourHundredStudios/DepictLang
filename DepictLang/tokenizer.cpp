@@ -66,7 +66,7 @@ void Tokenizer::setup(){
         { literal, single_quotes ,'"' },
         { delimiter, space , ' ' },
         { delimiter, comma , ',' },
-      //  { delimiter, equal , '=' },
+        { delimiter, equal , '=' },
         { delimiter, newline , '\n' },
     };
     state = { keyword };
@@ -83,11 +83,7 @@ Tokenizer::tokenMatch Tokenizer::identifyToken(char c){
 
 void Tokenizer::handleDelimiter(Tokenizer::tokenMatch match){
     if(match.type==delimiter && state.type == keyword){
-        if(tokenValue != ""){
-            tokens.push_back(new Token(tokenValue, state));
-            tokenValue = "";
-        }
-
+        handleKeyword();
         tokens.push_back(new Token(string() + match.opening, { match }));
         recordChar = false;
     }
@@ -97,6 +93,7 @@ void Tokenizer::handleLiteral(Tokenizer::tokenMatch match){
     if(match.type==literal){
         inLiteral = !inLiteral;
         if(state.type == keyword){
+            handleKeyword();
             state = match;
             recordChar = false;
         }else if (state.type == literal){
@@ -111,10 +108,7 @@ void Tokenizer::handleLiteral(Tokenizer::tokenMatch match){
 void Tokenizer::handleContainer(Tokenizer::tokenMatch match, char matchChar){
     if(match.type==container && !inLiteral){
         if(state.type == keyword && stateCount == 0){
-            if(tokenValue != ""){
-                tokens.push_back(new Token(tokenValue, {keyword}));
-                tokenValue = "";
-            }
+            handleKeyword();
             state = match;
             stateCount++;
             recordChar = false;
@@ -135,6 +129,12 @@ void Tokenizer::handleContainer(Tokenizer::tokenMatch match, char matchChar){
     }
 }
 
+void Tokenizer::handleKeyword(){
+    if(tokenValue != ""){
+        tokens.push_back(new Token(tokenValue, {keyword}));
+        tokenValue = "";
+    }
+}
 
 void Tokenizer::tokenize() {
     for(char c : source){
@@ -147,10 +147,7 @@ void Tokenizer::tokenize() {
         if (!recordChar) continue;
         tokenValue += c;
     }
-    if(tokenValue != ""){
-        tokens.push_back(new Token(tokenValue, state));
-        tokenValue = "";
-    }
+    handleKeyword();
     
 }
 

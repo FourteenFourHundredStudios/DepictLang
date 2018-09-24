@@ -9,10 +9,13 @@
 #ifndef interpreter_hpp
 #define interpreter_hpp
 
-#include "tokenizer.hpp"
+
+//#include "tokenizer.hpp"
 #include "bindings.hpp"
 #include "Parser.hpp"
-#include "util.hpp"
+#include "virtualmem.hpp"
+//#include "util.hpp"
+
 
 class Statement {
 public:
@@ -28,6 +31,7 @@ public:
         }
         return val;
     }
+    
     
 };
 

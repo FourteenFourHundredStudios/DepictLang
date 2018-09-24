@@ -12,7 +12,8 @@
 #include "tokenizer.hpp"
 #include "depictobj.hpp"
 
-vector<DepictObject*>* parseParamSet(Token* set);
+extern vector<DepictObject*>* parseParamSet(Token* set);
+extern DepictObject* tokenToObject(Token* token);
 
 #include <stdio.h>
 

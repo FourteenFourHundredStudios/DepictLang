@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49394C542159494F00CC3080 /* virtualmem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49394C522159494F00CC3080 /* virtualmem.cpp */; };
 		49CCE94E2151CDE2001B8F1F /* prop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49CCE94C2151CDE2001B8F1F /* prop.cpp */; };
 		49D741012152EBB500FB34B6 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49D740FF2152EBB500FB34B6 /* Parser.cpp */; };
 		49E558A2215043BE00F3E753 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E558A1215043BE00F3E753 /* main.cpp */; };
@@ -30,6 +31,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		49394C522159494F00CC3080 /* virtualmem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = virtualmem.cpp; sourceTree = "<group>"; };
+		49394C532159494F00CC3080 /* virtualmem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = virtualmem.hpp; sourceTree = "<group>"; };
 		49CCE94C2151CDE2001B8F1F /* prop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = prop.cpp; sourceTree = "<group>"; };
 		49CCE94D2151CDE2001B8F1F /* prop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = prop.hpp; sourceTree = "<group>"; };
 		49D740FF2152EBB500FB34B6 /* Parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
@@ -95,6 +98,8 @@
 				49CCE94D2151CDE2001B8F1F /* prop.hpp */,
 				49D740FF2152EBB500FB34B6 /* Parser.cpp */,
 				49D741002152EBB500FB34B6 /* Parser.hpp */,
+				49394C522159494F00CC3080 /* virtualmem.cpp */,
+				49394C532159494F00CC3080 /* virtualmem.hpp */,
 			);
 			path = DepictLang;
 			sourceTree = "<group>";
@@ -159,6 +164,7 @@
 				49CCE94E2151CDE2001B8F1F /* prop.cpp in Sources */,
 				49E558B121507F3000F3E753 /* interpreter.cpp in Sources */,
 				49E558A2215043BE00F3E753 /* main.cpp in Sources */,
+				49394C542159494F00CC3080 /* virtualmem.cpp in Sources */,
 				49E558AE2150473B00F3E753 /* tokenizer.cpp in Sources */,
 				49E558AA2150440E00F3E753 /* util.cpp in Sources */,
 				49E558B721509A5E00F3E753 /* depictobj.cpp in Sources */,

@@ -8,7 +8,8 @@
 
 #ifndef depictobj_hpp
 #define depictobj_hpp
-#include "util.hpp"
+//#include "util.hpp"
+
 #include "prop.hpp"
 #include <stdio.h>
 

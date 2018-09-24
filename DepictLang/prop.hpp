@@ -10,13 +10,15 @@
 #define prop_hpp
 
 #include "util.hpp"
-#include "depictobj.hpp"
+//#include "depictobj.hpp"
+
+#include <stdio.h>
 
 struct prop {
     string name;
     DepictObject* obj;
 };
 
-#include <stdio.h>
+
 
 #endif /* prop_hpp */

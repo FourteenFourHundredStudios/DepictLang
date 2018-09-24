@@ -7,19 +7,15 @@
 //
 
 
-#include "util.hpp"
-#include "interpreter.hpp"
 
-//greet (hello, world, {(and, all)}) (hello, marc)
 
-/*
-string* f (){
-    return new string("f");
-}
 
-cout << *f() << endl;
-*/
- 
+//#include "util.hpp"
+ #include "interpreter.hpp"
+ #include "tokenizer.hpp"
+
+
+
 int main(int argc, const char * argv[]) {
 
     string file = readFile("/Users/Marc/Documents/Programming/DepictLang/DepictLang/test.dpct");
@@ -31,7 +27,6 @@ int main(int argc, const char * argv[]) {
     }*/
     
     Interpreter depict = Interpreter(file);
-    
-    
+
     return 0;
 }

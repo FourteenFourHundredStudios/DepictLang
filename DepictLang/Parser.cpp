@@ -7,7 +7,18 @@
 //
 
 #include "Parser.hpp"
+#include "virtualmem.hpp"
 
+DepictObject* tokenToObject(Token* token){
+    if(token->getType()==Tokenizer::literal){
+        //parse literals like strings etc
+        return new StringObject(token->value);
+    }else if(token->getType()==Tokenizer::keyword){
+        //parse variables here
+        return getVar(token->value);
+    }
+    return nullptr;
+}
 
 
 vector<DepictObject*>* parseParamSet(Token* set ){
@@ -16,11 +27,7 @@ vector<DepictObject*>* parseParamSet(Token* set ){
     Tokenizer* parse = new Tokenizer(set->value);
     if(set->getName() == Tokenizer::parentheses){
         for(Token* token:parse->tokens){
-            if(token->getType()==Tokenizer::literal){
-                objs->push_back(new StringObject(token->value));
-            }else if(token->getType()==Tokenizer::keyword){
-                //parse variables here
-            }
+            objs->push_back(tokenToObject(token));
         }
     }
 

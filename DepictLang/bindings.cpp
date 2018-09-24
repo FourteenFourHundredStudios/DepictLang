@@ -25,7 +25,6 @@ Binding* getBinding(string name){
 
 
 DepictObject* print(vector<DepictObject*>* params){
-    //cout << "ufff" << endl;
     cout << *params->at(0)->getValue() << endl;
     return nullptr;
 }
