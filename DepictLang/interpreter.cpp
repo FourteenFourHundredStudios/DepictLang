@@ -17,13 +17,10 @@ Interpreter::Interpreter(string code_init){
 
     for(Statement statement : statements){
 
-    //    cout << "1). one down" << endl;
         
         Token keyword = *statement.get(0);
         Binding* binding = getBinding(keyword.value);
 
- //       cout << "2). one down" << endl;
-        
         if(statement.get(1)->getName() == Tokenizer::equal){
             //assigning value
             defineVar(statement.get(0)->value, tokenToObject(statement.get(2)));
@@ -32,9 +29,7 @@ Interpreter::Interpreter(string code_init){
             vector<DepictObject*>* paramsParsed = parseParamSet(statement.get(1));
             binding -> func(paramsParsed);
         }
-     //   cout << "3). one down\n" << endl;
-        
-       
+        statement.release();
     }
     
 }

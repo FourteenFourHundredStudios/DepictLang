@@ -30,7 +30,7 @@ vector<DepictObject*>* parseParamSet(Token* set ){
             objs->push_back(tokenToObject(token));
         }
     }
-
+    free(parse);
     return objs;
 }
 

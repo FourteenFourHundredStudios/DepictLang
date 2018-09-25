@@ -31,7 +31,11 @@ public:
         }
         return val;
     }
-    
+    void release(){
+        for(Token* token : tokens){
+            free(token);
+        }
+    }
     
 };
 
