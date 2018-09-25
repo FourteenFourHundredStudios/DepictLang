@@ -84,7 +84,7 @@ Tokenizer::tokenMatch Tokenizer::identifyToken(char c){
 void Tokenizer::handleDelimiter(Tokenizer::tokenMatch match){
     if(match.type==delimiter && state.type == keyword){
         handleKeyword();
-        tokens.push_back(new Token(string() + match.opening, { match }));
+        if(match.opening!=' ')tokens.push_back(new Token(string() + match.opening, { match }));
         recordChar = false;
     }
 }

@@ -14,17 +14,15 @@ Interpreter::Interpreter(string code_init){
     code = code_init;
     generateStatements();
     generateBindings();
-    
+
     for(Statement statement : statements){
-    
-       // cout << "wggre" << endl;
-        //cout << statement.str() << endl;
-        
+
+    //    cout << "1). one down" << endl;
         
         Token keyword = *statement.get(0);
         Binding* binding = getBinding(keyword.value);
 
-        
+ //       cout << "2). one down" << endl;
         
         if(statement.get(1)->getName() == Tokenizer::equal){
             //assigning value
@@ -34,7 +32,7 @@ Interpreter::Interpreter(string code_init){
             vector<DepictObject*>* paramsParsed = parseParamSet(statement.get(1));
             binding -> func(paramsParsed);
         }
-         
+     //   cout << "3). one down\n" << endl;
         
        
     }
@@ -49,7 +47,9 @@ void Interpreter::generateStatements(){
 
         
         if(token->getName() == Tokenizer::newline){
-            statements.push_back(currentStatement);
+            if(currentStatement.tokens.size()>0){
+                statements.push_back(currentStatement);
+            }
             currentStatement.tokens.clear();
             continue;
         }

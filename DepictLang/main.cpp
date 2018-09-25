@@ -18,13 +18,15 @@
 
 int main(int argc, const char * argv[]) {
 
+    //cout << "starting" << endl;
+    
     string file = readFile("/Users/Marc/Documents/Programming/DepictLang/DepictLang/test.dpct");
   
-    /*
-    Tokenizer toke = Tokenizer(file);
-    for(Token* t : toke.tokens  ){
-        cout << t->str() << endl;
-    }*/
+    
+ //   Tokenizer toke = Tokenizer(file);
+  //  for(Token* t : toke.tokens  ){
+  //      cout << t->str() << endl;
+  //  }
     
     Interpreter depict = Interpreter(file);
 
