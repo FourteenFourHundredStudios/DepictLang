@@ -37,6 +37,8 @@ string Token::str(){
         return result;
     }else if (getType()==Tokenizer::keyword){
         return "Keyword: "+value;
+    }else if (getType()==Tokenizer::number){
+        return "Number: "+value;
     }
     return "";
 }
@@ -77,6 +79,14 @@ Tokenizer::tokenMatch Tokenizer::identifyToken(char c){
         if (c == potentialMatch.opening || c == potentialMatch.closing){
             return potentialMatch;
         }
+        
+        /*
+        else if(isdigit(c)){
+            Tokenizer::tokenMatch match = Tokenizer::tokenMatch();
+            match.type = Tokenizer::number;
+            match.numValue =  c - '0';
+            return {match};
+        }*/
     }
     return { keyword };
 }
@@ -105,6 +115,8 @@ void Tokenizer::handleLiteral(Tokenizer::tokenMatch match){
     }
 }
 
+
+
 void Tokenizer::handleContainer(Tokenizer::tokenMatch match, char matchChar){
     if(match.type==container && !inLiteral){
         if(state.type == keyword && stateCount == 0){
@@ -131,8 +143,14 @@ void Tokenizer::handleContainer(Tokenizer::tokenMatch match, char matchChar){
 
 void Tokenizer::handleKeyword(){
     if(tokenValue != ""){
-        tokens.push_back(new Token(tokenValue, {keyword}));
-        tokenValue = "";
+        if(!isNumber(tokenValue)){
+            tokens.push_back(new Token(tokenValue, {keyword}));
+            tokenValue = "";
+        }else{
+            tokens.push_back(new Token(tokenValue, {number}));
+            tokenValue = "";
+        }
+        
     }
 }
 
@@ -141,8 +159,8 @@ void Tokenizer::tokenize() {
         recordChar = true;
         tokenMatch charMatch = identifyToken(c);
         handleLiteral(charMatch);
+        //handleMath(charMatch);
         handleDelimiter(charMatch);
-        
         handleContainer(charMatch,c);
         if (!recordChar) continue;
         tokenValue += c;

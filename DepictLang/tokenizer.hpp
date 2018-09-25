@@ -30,7 +30,7 @@ public:
         literal,
         delimiter,
         keyword,
-        
+        number,
     };
     
     enum tokenName {
@@ -44,7 +44,11 @@ public:
         word,
         single_quotes,
         double_quotes,
-        equal
+        equal,
+        plus,
+        minus,
+        asterisk,
+        slash
     };
     
     struct tokenMatch {
@@ -52,6 +56,7 @@ public:
         tokenName name;
         char opening;
         char closing;
+        int numValue;
     };
     
     vector <tokenMatch> tokenMatchList;
@@ -62,6 +67,7 @@ public:
     tokenMatch identifyToken(char c);
     void tokenize();
     void setup();
+    void handleMath(tokenMatch match);
     void handleDelimiter(tokenMatch match);
     void handleLiteral(tokenMatch match);
     void handleContainer(tokenMatch match, char matchChar);

@@ -21,6 +21,8 @@ using namespace std;
 
 
 string readFile(string name);
+bool isNumber(const std::string& s);
+
 
 class Token;
 class DepictObject;
