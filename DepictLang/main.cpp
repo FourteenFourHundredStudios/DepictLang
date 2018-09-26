@@ -22,13 +22,13 @@ int main(int argc, const char * argv[]) {
     
     string file = readFile("/Users/Marc/Documents/Programming/DepictLang/DepictLang/test.dpct");
   
-    
+    /*
     Tokenizer toke = Tokenizer(file);
     for(Token* t : toke.tokens  ){
         cout << t->str() << endl;
-    }
+    }*/
     
- //   Interpreter depict = Interpreter(file);
+    Interpreter depict = Interpreter(file);
 
     return 0;
 }

@@ -14,6 +14,7 @@
 
 extern vector<DepictObject*>* parseParamSet(Token* set);
 extern DepictObject* tokenToObject(Token* token);
+extern DepictObject* tokensToObject(vector<Token*> tokens);
 
 #include <stdio.h>
 

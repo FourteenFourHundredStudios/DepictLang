@@ -29,8 +29,15 @@ DepictObject* print(vector<DepictObject*>* params){
     return nullptr;
 }
 
+DepictObject* doublePrint(vector<DepictObject*>* params){
+    cout << *params->at(0)->getValue() << endl;
+    cout << *params->at(1)->getValue() << endl;
+    return nullptr;
+}
+
 void generateBindings(){
     addBinding("print", print);
+    addBinding("doublePrint", doublePrint);
 }
 
 
