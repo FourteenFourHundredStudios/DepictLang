@@ -11,10 +11,33 @@
 #include "util.hpp"
 #include "tokenizer.hpp"
 #include "depictobj.hpp"
+#include "virtualmem.hpp"
 
-extern vector<DepictObject*>* parseParamSet(Token* set);
-extern DepictObject* tokenToObject(Token* token);
-extern DepictObject* tokensToObject(vector<Token*> tokens);
+
+
+enum nodeType {
+    expression,
+    assignment
+};
+
+class ASTNode {
+public:
+    string str();
+};
+
+
+class AST{
+public:
+    Token currentToken;
+    int currentTokenPos;
+    vector<Token> tokens;
+    AST(vector<Token> tokens_init);
+    bool accept(Tokenizer::tokenType tokenType);
+    void parse();
+    void next();
+    vector<ASTNode> getTree();
+};
+
 
 #include <stdio.h>
 

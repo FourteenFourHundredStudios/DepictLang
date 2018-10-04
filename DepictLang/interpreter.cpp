@@ -16,20 +16,7 @@ Interpreter::Interpreter(string code_init){
     generateBindings();
 
     for(Statement statement : statements){
-
         
-        Token keyword = *statement.get(0);
-        Binding* binding = getBinding(keyword.value);
-
-        if(statement.get(1)->getName() == Tokenizer::equal){
-            //assigning value
-            defineVar(statement.get(0)->value, tokenToObject(statement.get(2)));
-        }else{
-            //calling functions that are defined in C++
-            vector<DepictObject*>* paramsParsed = parseParamSet(statement.get(1));
-            binding -> func(paramsParsed);
-        }
-        statement.release();
     }
     
 }

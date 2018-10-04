@@ -37,6 +37,7 @@ string* DepictObject::getValue(){
 //string object
 StringObject::StringObject(string value_init){
     DepictObject();
+    type = "sting";
     value = new string(value_init);
 }
 
@@ -58,6 +59,7 @@ IntObject::IntObject(string value_init){
 
 void IntObject::eval(){
     int num = 0 ;
+    type = "int";
     switch (op) {
         case Tokenizer::plus:
             num = value1+value2;

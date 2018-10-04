@@ -7,53 +7,30 @@
 //
 
 #include "Parser.hpp"
-#include "virtualmem.hpp"
 
-DepictObject* tokenToObject(Token* token){
-    if(token->getType()==Tokenizer::literal){
-        //parse literals like strings etc
-        return new StringObject(token->value);
-    }else if(token->getType()==Tokenizer::keyword){
-        //parse variables here
-        return getVar(token->value);
-    }else if(token->getType()==Tokenizer::number){
-        //parse numbers here
-        return new IntObject(token->value);
+
+
+
+
+AST::AST(vector<Token> tokens_init){
+    tokens = tokens_init;
+    parse();
+}
+
+void AST::parse(){
+    if(accept(Tokenizer::keyword)){
+        
     }
-    return nullptr;
 }
 
-DepictObject* tokensToObject(vector<Token*> tokens){
-    
-    return nullptr;
-}
-
-vector<DepictObject*>* parseParamSet(Token* set ){
-
-    vector<DepictObject*>* objs = new vector<DepictObject*>();
-    Tokenizer* parse = new Tokenizer(set->value);
-    if(set->getName() == Tokenizer::parentheses){
-        vector<Token*> tokens;
-        for(Token* token:parse->tokens){
-            if(token->getType()!=Tokenizer::delimiter){
-                tokens.push_back(token);
-            }else{
-                if(tokens.size() == 1){
-                    objs->push_back(tokenToObject(tokens.at(0)));
-                }else{
-                    objs->push_back(tokensToObject(tokens));
-                }
-                tokens.clear();
-            }
-        }
-        if(tokens.size() == 1){
-            objs->push_back(tokenToObject(tokens.at(0)));
-        }else{
-            objs->push_back(tokensToObject(tokens));
-        }
+bool AST::accept(Tokenizer::tokenType tokenType){
+    if(tokens[currentTokenPos].getType()==tokenType){
+        currentTokenPos++;
+        return true;
     }
-    free(parse);
-    return objs;
+    return false;
 }
 
-
+vector<ASTNode> AST::getTree(){
+    return vector<ASTNode>();
+}

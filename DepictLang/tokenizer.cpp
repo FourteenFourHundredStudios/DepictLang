@@ -14,6 +14,10 @@ Token::Token(string value_init,Tokenizer::tokenMatch tokenProps_init){
     tokenProps = tokenProps_init;
 }
 
+Token::Token(){
+    
+}
+
 string Token::str(){
     if(getType()==Tokenizer::literal){
         string result = "Literal: ";
@@ -39,6 +43,10 @@ string Token::str(){
         return "Keyword: "+value;
     }else if (getType()==Tokenizer::number){
         return "Number: "+value;
+    }else if (getType()==Tokenizer::operator_){
+        return "Operator: "+value;
+    }else if (getType()==Tokenizer::identifier){
+        return "Identifier: "+value;
     }
     return "";
 }
@@ -71,6 +79,12 @@ void Tokenizer::setup(){
         { delimiter, equal , '=' },
         { delimiter, newline , '\n' },
     };
+    operators = {
+        "+","-","*","/"
+    };
+    keywords = {
+        "this"
+    };
     state = { keyword };
 }
 
@@ -79,14 +93,7 @@ Tokenizer::tokenMatch Tokenizer::identifyToken(char c){
         if (c == potentialMatch.opening || c == potentialMatch.closing){
             return potentialMatch;
         }
-        
-        /*
-        else if(isdigit(c)){
-            Tokenizer::tokenMatch match = Tokenizer::tokenMatch();
-            match.type = Tokenizer::number;
-            match.numValue =  c - '0';
-            return {match};
-        }*/
+
     }
     return { keyword };
 }
@@ -142,15 +149,18 @@ void Tokenizer::handleContainer(Tokenizer::tokenMatch match, char matchChar){
 }
 
 void Tokenizer::handleKeyword(){
+    
     if(tokenValue != ""){
-        if(!isNumber(tokenValue)){
-            tokens.push_back(new Token(tokenValue, {keyword}));
-            tokenValue = "";
-        }else{
+        if(isNumber(tokenValue)){
             tokens.push_back(new Token(tokenValue, {number}));
-            tokenValue = "";
+        }else if(contains<string>(Tokenizer::operators, tokenValue)){
+            tokens.push_back(new Token(tokenValue, {operator_}));
+        }else if(contains<string>(Tokenizer::keywords, tokenValue)){
+            tokens.push_back(new Token(tokenValue, {keyword}));
+        }else{
+            tokens.push_back(new Token(tokenValue, {identifier}));
         }
-        
+        tokenValue = "";
     }
 }
 

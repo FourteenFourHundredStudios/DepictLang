@@ -22,6 +22,11 @@ using namespace std;
 
 string readFile(string name);
 bool isNumber(const std::string& s);
+template <class T>
+inline bool contains(vector<T> search, T value){
+    for(T t:search)if(t==value)return true;
+    return false;
+}
 
 
 class Token;

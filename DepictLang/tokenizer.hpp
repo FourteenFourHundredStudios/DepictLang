@@ -31,6 +31,8 @@ public:
         delimiter,
         keyword,
         number,
+        identifier,
+        operator_
     };
     
     enum tokenName {
@@ -58,7 +60,8 @@ public:
         char closing;
         int numValue;
     };
-    
+    vector <string> keywords;
+    vector <string> operators;
     vector <tokenMatch> tokenMatchList;
     int stateCount = 0;
     tokenMatch state;
@@ -79,6 +82,7 @@ class Token{
 public:
     Tokenizer::tokenMatch tokenProps;
     Token(string value_init,Tokenizer::tokenMatch tokenProps_init);
+    Token();
     string value;
     string str();
     Tokenizer::tokenType getType();
