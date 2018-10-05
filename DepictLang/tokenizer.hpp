@@ -49,6 +49,7 @@ public:
         equal,
         plus,
         minus,
+        period,
         asterisk,
         slash
     };

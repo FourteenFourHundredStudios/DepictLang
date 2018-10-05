@@ -15,8 +15,10 @@ Interpreter::Interpreter(string code_init){
     generateStatements();
     generateBindings();
 
+    
     for(Statement statement : statements){
-        
+        AST a = AST(statement.tokens);
+        cout << a.getTree()->str() << endl;
     }
     
 }

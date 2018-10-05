@@ -77,6 +77,7 @@ void Tokenizer::setup(){
         { delimiter, space , ' ' },
         { delimiter, comma , ',' },
         { delimiter, equal , '=' },
+        { delimiter, period , '.' },
         { delimiter, newline , '\n' },
     };
     operators = {
@@ -93,7 +94,6 @@ Tokenizer::tokenMatch Tokenizer::identifyToken(char c){
         if (c == potentialMatch.opening || c == potentialMatch.closing){
             return potentialMatch;
         }
-
     }
     return { keyword };
 }
@@ -101,7 +101,7 @@ Tokenizer::tokenMatch Tokenizer::identifyToken(char c){
 void Tokenizer::handleDelimiter(Tokenizer::tokenMatch match){
     if(match.type==delimiter && state.type == keyword){
         handleKeyword();
-        if(match.opening!=' ')tokens.push_back(new Token(string() + match.opening, { match }));
+        if(match.opening!=' '&&match.opening!='.')tokens.push_back(new Token(string() + match.opening, { match }));
         recordChar = false;
     }
 }
@@ -169,7 +169,6 @@ void Tokenizer::tokenize() {
         recordChar = true;
         tokenMatch charMatch = identifyToken(c);
         handleLiteral(charMatch);
-        //handleMath(charMatch);
         handleDelimiter(charMatch);
         handleContainer(charMatch,c);
         if (!recordChar) continue;
