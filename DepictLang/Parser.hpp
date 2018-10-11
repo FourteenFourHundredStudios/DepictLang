@@ -22,6 +22,7 @@ enum nodeType {
     literal,
     number,
     attribute,
+    test,
     null,
 };
 
@@ -58,6 +59,14 @@ public:
     string str();
 };
 
+class ASTBinary : public ASTNode{
+public:
+    ASTBinary(ASTNode* left_init, string op_init, ASTNode* right_init);
+    string str();
+    ASTNode* left;
+    string op;
+    ASTNode* right;
+};
 
 
 class AST{
@@ -66,8 +75,9 @@ public:
     int currentTokenPos;
     vector<Token*> tokens;
     AST(vector<Token*> tokens_init);
-    
+    int getOpprecedence(string op);
     ASTNode* createBranch(int index);
+    ASTNode* parseMath(int index, int minPr);
     ASTNode* getTree();
 };
 

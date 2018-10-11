@@ -86,6 +86,7 @@ public:
     Token();
     string value;
     string str();
+    bool parsed = false;
     Tokenizer::tokenType getType();
     Tokenizer::tokenName getName();
 };

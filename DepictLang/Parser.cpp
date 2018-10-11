@@ -47,38 +47,72 @@ string ASTAttribute::str(){
     return "{Type: Attribute, Name: "+name+", Value: "+value->str()+"}";
 }
 
+ASTBinary::ASTBinary(ASTNode* left_init, string op_init, ASTNode* right_init) : ASTNode(binary){
+    left = left_init;
+    right = right_init;
+    op = op_init;
+}
+
+string ASTBinary::str () {
+    return "{Type: Binary, Left: "+left->str()+", Op: "+op+", Right: "+right->str()+"}";
+}
+
+
+
+ASTNode* AST::parseMath(int index,int minPr){
+    
+    
+    return new ASTNode(null);
+    //return new ASTBinary(left,tokens[index]->value,right);
+}
 
 ASTNode* AST::createBranch(int index){
+
+    //cout << tokens[index]->str() << endl;
+    
+    //if(tokens[index]->parsed)return new ASTNode(null);
     switch (tokens[index]->getType()) {
         case Tokenizer::identifier:
             return new ASTAttribute(tokens[index]->value);
             break;
-            
+        case Tokenizer::operator_:
+            return parseMath(index, getOpprecedence(tokens[index]->value));
+            break;
         default:
-            return nullptr;
+            return new ASTNode(null);
     }
 }
 
+int AST::getOpprecedence(string op){
+    if(op=="+" || op=="-"){
+        return 0;
+    }else if (op=="*" || op=="/"){
+        return 1;
+    }
+    return -1;
+}
 
 ASTNode* AST::getTree(){
     
+    int size = static_cast<int>(tokens.size());
+    
     ASTNode* tree = new ASTNode(null);
-    ASTNode* newTree = new ASTNode(null);
-    for(int i=0; i<tokens.size(); i++){
+    ASTNode* newValue = new ASTNode(null);
+    for(int i=size; i --> 0;){
+        
         ASTNode* branch = createBranch(i);
-        
-        newTree = branch;
-        
-        if(tree->type == null){
+
+        if(newValue->type == null){
             tree = branch;
-        }else if (ASTExpression* derived = dynamic_cast<ASTExpression*>(newTree)) {
-            derived->body = tree;
-        }else  if (ASTAttribute* derived = dynamic_cast<ASTAttribute*>(newTree)) {
-            derived->value = tree;
+        }else if (ASTAttribute* derived = dynamic_cast<ASTAttribute*>(newValue)) {
+            derived->value = branch;
         }
+
+        newValue = branch;
         
+
         
     
     }
-    return newTree;
+    return tree;
 }
